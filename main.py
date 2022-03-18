@@ -37,8 +37,14 @@ def check_collision(pipes):
     return True
 
 def rotate_bird(bird):
-    new_bird = pygame.transform.rotozoom(bird, bird_movement *3, 1)
+    new_bird = pygame.transform.rotozoom(bird, -bird_movement *3, 1)
     return new_bird
+
+def bird_animation():
+    new_bird = bird_frames[bird_index]
+    new_bird_rect = new_bird.get_rect(center = (bird_startx, bird_rect.centery))
+
+    return new_bird, new_bird_rect
 
 # INITIALIZATION #
 
@@ -68,18 +74,31 @@ floor_y_pos = 630
 
 bird_w = 34*scale_factor
 bird_h = 24*scale_factor
-bird_surface = pygame.image.load('sprites/bluebird-midflap.png').convert_alpha()
-bird_surface = pygame.transform.scale(bird_surface, (bird_w, bird_h))
 bird_startx = 70
 bird_starty = 358.4
-# Next line takes bird_surface and creates a rectangle around it
+
+# bird_surface = pygame.image.load('sprites/bluebird-midflap.png').convert_alpha()
+# bird_surface = pygame.transform.scale(bird_surface, (bird_w, bird_h))
+# # Next line takes bird_surface and creates a rectangle around it
+# bird_rect = bird_surface.get_rect(center = (bird_startx, bird_starty))
+
+bird_downflap = pygame.transform.scale(pygame.image.load('sprites/bluebird-downflap.png').convert_alpha(), (bird_w, bird_h))
+bird_midflap = pygame.transform.scale(pygame.image.load('sprites/bluebird-midflap.png').convert_alpha(), (bird_w, bird_h))
+bird_upflap = pygame.transform.scale(pygame.image.load('sprites/bluebird-upflap.png').convert_alpha(), (bird_w, bird_h))
+bird_frames = [bird_downflap, bird_midflap, bird_upflap]
+bird_index = 0
+bird_surface = bird_frames[bird_index]
 bird_rect = bird_surface.get_rect(center = (bird_startx, bird_starty))
+
+BIRDFLAP = pygame.USEREVENT + 1
+pygame.time.set_timer(BIRDFLAP, 200)
+
  
 pipe_w = 52*scale_factor
 pipe_h = 320*scale_factor
-pipe_surface = pygame.image.load('sprites/pipe-green.png').convert()
+pipe_surface = pygame.image.load('sprites/pipe-green.png').convert() 
 pipe_surface = pygame.transform.scale(pipe_surface, (pipe_w, pipe_h))
-pipe_list = []
+pipe_list = [] 
 SPAWNPIPE = pygame.USEREVENT # Triggered by timer
 pygame.time.set_timer(SPAWNPIPE, 1200) # Trigger event every 1.2 seconds
 pipe_x_pos = screen_w + (2*pipe_w)
@@ -107,6 +126,14 @@ while True:
 
         if event.type == SPAWNPIPE:
             pipe_list.extend(create_pipe())
+
+        if event.type == BIRDFLAP:
+            if bird_index < 2:
+                bird_index += 1
+            else:
+                bird_index = 0
+
+            bird_surface, bird_rect = bird_animation()
             
     
     screen.blit(bg_surface, (0,0))
