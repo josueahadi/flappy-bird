@@ -46,6 +46,13 @@ def bird_animation():
 
     return new_bird, new_bird_rect
 
+def score_display():
+    score_surface = game_font.render(str(score), True, (255,255,255))
+    score_rect = score_surface.get_rect(center = (screen_w/2, 100))
+    screen.blit(score_surface, score_rect)
+
+
+
 # INITIALIZATION #
 
 pygame.init()
@@ -55,12 +62,15 @@ screen_h = 716.8
 screen = pygame.display.set_mode((screen_w, screen_h))  # Canvas
 scale_factor = 1.428571429
 clock = pygame.time.Clock() 
+game_font = pygame.font.Font('font/04B_19.TTF', 40)
 
 # GAME VARIABLES #
 
 gravity = 0.25 # Not the real value but an abstract value
 bird_movement = 0
 game_active = True
+score = 0
+high_score = 0
 
 bg_surface = pygame.image.load('sprites/background-day.png').convert()
 bg_surface = pygame.transform.scale(bg_surface, (screen_w, screen_h))
@@ -151,6 +161,9 @@ while True:
         # Pipes
         pipe_list = move_pipes(pipe_list)
         draw_pipes(pipe_list)
+
+        # Score
+        score_display()
 
     # Floor
     floor_x_pos -= 1
