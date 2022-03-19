@@ -47,7 +47,7 @@ def bird_animation():
     return new_bird, new_bird_rect
 
 def score_display():
-    score_surface = game_font.render(str(score), True, (255,255,255))
+    score_surface = game_font.render(str(int(score)), True, (255,255,255))
     score_rect = score_surface.get_rect(center = (screen_w/2, 100))
     screen.blit(score_surface, score_rect)
 
@@ -163,6 +163,7 @@ while True:
         draw_pipes(pipe_list)
 
         # Score
+        score+=0.005
         score_display()
 
     # Floor
@@ -171,6 +172,6 @@ while True:
     if floor_x_pos <= -screen_w:
         floor_x_pos = 0
 
-    pygame.display.update()
+    pygame.display.update() 
     # Limit frame rate
     clock.tick(120)
