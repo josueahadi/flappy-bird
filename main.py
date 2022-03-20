@@ -48,17 +48,18 @@ def bird_animation():
 
 def score_display(game_state):
     if game_state == 'playing':
-        score_surface = game_font.render(str(int(score)), True, (255,255,255))
+        game.font.render()
+        score_surface = game_font.render(f'Score: {int(score)}', True, (255,255,255))
         score_rect = score_surface.get_rect(center = (screen_w/2, 100))
         screen.blit(score_surface, score_rect)
 
     if game_state == 'game_over':
-        score_surface = game_font.render(str(int(score)), True, (255,255,255))
+        score_surface = game_font.render(f'Score: {int(score)}', True, (255,255,255))
         score_rect = score_surface.get_rect(center = (screen_w/2, 100))
         screen.blit(score_surface, score_rect)
 
-        high_score_surface = game_font.render(str(int(high_score)), True, (255,255,255))
-        high_score_rect = score_surface.get_rect(center = (screen_w/2, 595))
+        high_score_surface = game_font.render(f'High score: {int(high_score)}', True, (255,255,255))
+        high_score_rect = score_surface.get_rect(center = (screen_w/2.6, 595))
         screen.blit(high_score_surface, high_score_rect)
 
 
