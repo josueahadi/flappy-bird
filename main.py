@@ -146,6 +146,7 @@ while True:
                 pipe_list.clear()
                 bird_rect.center = (bird_startx, bird_starty)
                 bird_movement = 0
+                score = 0
 
         if event.type == SPAWNPIPE:
             pipe_list.extend(create_pipe())
