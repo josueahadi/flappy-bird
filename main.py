@@ -58,7 +58,7 @@ def score_display(game_state):
         screen.blit(score_surface, score_rect)
 
         high_score_surface = game_font.render(f'High score: {int(high_score)}', True, (255,255,255))
-        high_score_rect = score_surface.get_rect(center = (screen_w/2.6, 595))
+        high_score_rect = score_surface.get_rect(center = (screen_w/2.4, 595))
         screen.blit(high_score_surface, high_score_rect)
 
 def update_score(score, high_score):
@@ -75,7 +75,7 @@ screen_h = 716.8
 screen = pygame.display.set_mode((screen_w, screen_h))  # Canvas
 scale_factor = 1.428571429
 clock = pygame.time.Clock() 
-game_font = pygame.font.Font('font/04B_19.TTF', 40)
+game_font = pygame.font.Font('font/04B_19.TTF', 28)
 
 # GAME VARIABLES #
 
@@ -127,6 +127,11 @@ pygame.time.set_timer(SPAWNPIPE, 1200) # Trigger event every 1.2 seconds
 pipe_x_pos = screen_w + (2*pipe_w)
 pipe_y_pos = screen_h/2
 pipe_height = [300, 420, 560] # Possible heights the pipes can have 
+
+msg_w = 184*scale_factor
+msg_h = 267*scale_factor
+game_over_surface = pygame.transform.scale((pygame.image.load('sprites/message.png').convert_alpha()), (msg_w, msg_h))
+game_over_rect = game_over_surface.get_rect(center = (screen_w/2, screen_h/2))
 
 # GAME LOOP #
 
@@ -180,6 +185,7 @@ while True:
         score+=0.005
         score_display('playing')
     else:
+        screen.blit(game_over_surface, game_over_rect)
         high_score = update_score(score, high_score)
         score_display('game_over')
 
