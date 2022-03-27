@@ -29,12 +29,15 @@ def draw_pipes(pipes):
             screen.blit(flip_pipe, pipe)
 
 def check_collision(pipes):
+    global can_score
     for pipe in pipes:
         if bird_rect.colliderect(pipe):
             collision_sound.play()
+            can_score = True
             return False
         
     if bird_rect.top <= -100 or bird_rect.bottom >= floor_y_pos:
+        can_score = True
         return False
     
     return True
@@ -79,6 +82,17 @@ def update_score(score, high_score):
         high_score = score
     return high_score
 
+def pipe_score_check():
+    global score, can_score
+    if pipe_list:
+        for pipe in pipe_list:
+            if 95 < pipe.centerx < 105 and can_score:
+                score += 1
+                score_sound.play()
+                can_score = False
+            if pipe.centerx < 0:
+                can_score = True
+
 # INITIALIZATION #
 
 #pygame.mixer.pre_init(frequency = 44100, size = 16, channels = 1, buffer = 512)
@@ -101,6 +115,7 @@ gameover = True
 startup_menu = True
 score = 0
 high_score = 0
+can_score = True
 
 bg_surface = pygame.image.load('sprites/background-day.png').convert()
 bg_surface = pygame.transform.scale(bg_surface, (screen_w, screen_h))
@@ -210,13 +225,10 @@ while True:
         draw_pipes(pipe_list)
 
         # Score
-        score+=0.005
+        pipe_score_check()
         score_display('playing')
         
-        score_sound_countdown -= 1
-        if score_sound_countdown <= 0:
-            score_sound.play()
-            score_sound_countdown = 200
+        
 
     if game_active and startup_menu:
         gameover = False
