@@ -118,8 +118,10 @@ score = 0
 high_score = 0
 can_score = True
 
-bg_surface = pygame.image.load('sprites/background-day.png').convert()
-bg_surface = pygame.transform.scale(bg_surface, (screen_w, screen_h))
+bg_day = pygame.image.load('sprites/background-day.png').convert()
+bg_day = pygame.transform.scale(bg_day, (screen_w, screen_h))
+bg_night = pygame.image.load('sprites/background-night.png').convert()
+bg_night = pygame.transform.scale(bg_night, (screen_w, screen_h))
 
 msg_w = 184*scale_factor
 msg_h = 267*scale_factor
@@ -208,8 +210,10 @@ while True:
 
             bird_surface, bird_rect = bird_animation()
             
-    
-    screen.blit(bg_surface, (0,0))
+    # Background display
+    screen.blit(bg_day, (0,0))
+    if score in range (20, 1000, 20):
+        screen.blit(bg_night, (0, 0))
     
     if game_active and startup_menu == False:
         # Bird
@@ -254,4 +258,4 @@ while True:
 
     pygame.display.update() 
     # Limit frame rate
-    clock.tick(100)
+    clock.tick(120)
